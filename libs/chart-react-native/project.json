@@ -1,0 +1,35 @@
+{
+  "name": "@my-chart/react-native",
+  "sourceRoot": "libs/chart-react-native/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "project": "libs/chart-react-native/package.json",
+        "entryFile": "libs/chart-react-native/src/index.ts",
+        "outputPath": "libs/chart-react-native/dist",
+        "tsConfig": "libs/chart-react-native/tsconfig.lib.json",
+        "compiler": "babel",
+        "external": [
+          "react/jsx-runtime",
+          "react-native",
+          "react",
+          "react-dom",
+          "react-native-svg",
+          "@my-chart/core"
+        ],
+        "format": ["cjs", "esm"],
+        "assets": [
+          {
+            "input": "libs/chart-react-native",
+            "output": ".",
+            "glob": "README.md"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@my-chart/react-native",
+  "version": "0.0.1",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.esm.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@my-chart-lib/source": "./src/index.ts",
+      "types": "./dist/index.esm.d.ts",
+      "import": "./dist/index.esm.js",
+      "default": "./dist/index.cjs.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "libs/chart-react-native/src",
+    "projectType": "library",
+    "tags": []
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-native": "~0.79.3",
+    "react-native-svg": "~15.11.2"
+  }
+}
