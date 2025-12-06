@@ -5,6 +5,8 @@ import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
+import os from 'node:os';
 
 type CommitMessage = {
   title: string;
@@ -62,7 +64,7 @@ const generateCommitMessage = async (diff: string): Promise<CommitMessage> => {
       '요구사항:',
       '- title: 한 줄짜리 커밋 제목.',
       "  - 예: 'feat: PWA 오프라인 캐시 기능 추가'",
-      '  - 타입(feat, fix, refactor, docs, chore 등)은 영어 그대로 사용.',
+      '  - 타입(feat, fix, refactor, style, docs, chore 등)은 영어 그대로 사용.',
       '  - 나머지 설명은 모두 한국어로 작성.',
       '- body: 커밋 상세 설명 (최대 3줄까지 가능).',
       '  - 무엇을, 왜, 어떻게 변경했는지 한국어로 간단하고 명확하게.',
@@ -113,6 +115,57 @@ const generateCommitMessage = async (diff: string): Promise<CommitMessage> => {
   return { title, body };
 };
 
+const editCommitMessageWithEditor = (
+  message: CommitMessage
+): CommitMessage | null => {
+  const tmpDir = os.tmpdir();
+  const tmpFile = path.join(tmpDir, `ai-commit-${Date.now()}.txt`);
+
+  const initialContent =
+    message.body && message.body.trim().length > 0
+      ? `${message.title}\n\n${message.body}\n`
+      : `${message.title}\n\n`;
+
+  fs.writeFileSync(tmpFile, initialContent, 'utf8');
+
+  let editor: string;
+  if (process.platform === 'win32') {
+    editor = 'notepad';
+  } else {
+    editor = process.env.GIT_EDITOR || process.env.EDITOR || 'vi';
+  }
+
+  console.log(`\n[ai-commit] ${editor} 에서 커밋 메시지를 편집하세요.`);
+  console.log('[ai-commit] 에디터를 닫으면 다음 단계로 진행합니다.\n');
+
+  const result = spawnSync(editor, [tmpFile], {
+    stdio: 'inherit',
+  });
+
+  if (result.status !== 0) {
+    console.error(
+      `\n[ai-commit] 에디터가 비정상 종료되었습니다. (exit code: ${result.status})`
+    );
+    return null;
+  }
+
+  const edited = fs.readFileSync(tmpFile, 'utf8');
+  fs.unlinkSync(tmpFile);
+
+  const normalized = edited.replace(/\r\n/g, '\n');
+  const lines = normalized.split('\n');
+
+  const title = (lines[0] ?? '').trim();
+  const body = lines.slice(1).join('\n').trim();
+
+  if (!title) {
+    console.error('[ai-commit] 에디터에서 커밋 제목을 찾을 수 없습니다.');
+    return null;
+  }
+
+  return { title, body };
+};
+
 const askUserForDecision = async (
   message: CommitMessage
 ): Promise<CommitMessage | null> => {
@@ -129,6 +182,7 @@ const askUserForDecision = async (
   );
 
   const lower = answer.trim().toLowerCase();
+
   if (lower === 'n') {
     rl.close();
     console.log('[ai-commit] 커밋을 취소했습니다.');
@@ -136,22 +190,18 @@ const askUserForDecision = async (
   }
 
   if (lower === 'e') {
-    const newTitle = await rl.question(
-      `새 제목 (Enter = 기존 유지)\n현재: ${message.title}\n> `
-    );
-    const newBody = await rl.question(
-      '새 본문 (Enter = 기존 유지, 여러 줄은 나중에 에디터에서 직접 수정하는 걸 추천)\n> '
-    );
     rl.close();
 
-    return {
-      title: newTitle.trim() || message.title,
-      body: newBody.trim() || message.body,
-    };
+    const edited = editCommitMessageWithEditor(message);
+    if (!edited) {
+      console.log('[ai-commit] 커밋 메시지 수정을 취소했습니다.');
+      return null;
+    }
+
+    return edited;
   }
 
   rl.close();
-
   return message;
 };
 
