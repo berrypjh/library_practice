@@ -16,7 +16,8 @@
     "graph": "nx graph",
     "release": "nx release",
     "release:dry-run": "nx release --dry-run",
-    "ai:commit": "tsx tools/scripts/ai-commit-msg.mts"
+    "ai:commit": "tsx tools/scripts/ai-commit-msg.mts",
+    "ai:ui": "tsx tools/scripts/ai-ui-scaffold.mts"
   },
   "private": true,
   "devDependencies": {
@@ -53,6 +54,7 @@
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
     "@testing-library/dom": "10.4.0",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "16.3.0",
     "@types/node": "20.19.9",
     "@types/react": "^19.0.10",
@@ -72,6 +74,7 @@
     "eslint-plugin-jsx-a11y": "6.10.1",
     "eslint-plugin-react": "7.35.0",
     "eslint-plugin-react-hooks": "5.0.0",
+    "eslint-plugin-unused-imports": "^4.3.0",
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
@@ -93,7 +96,7 @@
     "verdaccio": "^6.0.5",
     "vite": "^7.0.0",
     "vite-plugin-dts": "~4.5.0",
-    "vitest": "^4.0.0"
+    "vitest": "^4.0.14"
   },
   "dependencies": {
     "@expo/metro-config": "~0.20.14",
