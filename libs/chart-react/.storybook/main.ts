@@ -1,11 +1,8 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { mergeConfig } from 'vite';
 import * as path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const root = import.meta.dirname;
 
 const config: StorybookConfig = {
   stories: ['../src/lib/**/*.@(mdx|stories.@(js|jsx|ts|tsx))'],
@@ -27,11 +24,7 @@ const config: StorybookConfig = {
     return mergeConfig(config, {
       resolve: {
         alias: {
-          'react-native': 'react-native-web',
-          '@my-chart/core': path.resolve(
-            __dirname,
-            '../../chart-core/src/index.ts'
-          ),
+          '@my-chart/core': path.resolve(root, '../../chart-core/src/index.ts'),
         },
         extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json'],
       },

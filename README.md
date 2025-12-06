@@ -2,7 +2,7 @@
 
 ### Setup & Configuration
 - [x] Nx를 이용한 프로젝트 초기 세팅
-- [ ] Vite, Storybook, TypeScript 설정 점검
+- [x] Vite, Storybook, TypeScript 설정 점검
 
 ### Optimization & Build
 - [ ] 라이브러리 번들링 최적화 (Tree-shaking, 산출물 크기 점검)

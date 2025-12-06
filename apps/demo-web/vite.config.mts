@@ -3,8 +3,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import * as path from 'path';
 
+const root = import.meta.dirname;
+
 export default defineConfig(() => ({
-  root: import.meta.dirname,
+  root,
   cacheDir: '../../node_modules/.vite/apps/demo-web',
   server: {
     port: 4200,
@@ -18,17 +20,14 @@ export default defineConfig(() => ({
   resolve: {
     alias: {
       '@my-chart/core': path.resolve(
-        __dirname,
+        root,
         '../../libs/chart-core/src/index.ts'
       ),
       '@my-chart/react': path.resolve(
-        __dirname,
+        root,
         '../../libs/chart-react/src/index.ts'
       ),
-      '@my-chart/shared-data': path.resolve(
-        __dirname,
-        '../../shared/src/index.ts'
-      ),
+      '@my-chart/shared-data': path.resolve(root, '../../shared/src/index.ts'),
     },
   },
   build: {

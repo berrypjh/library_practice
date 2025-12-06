@@ -4,7 +4,6 @@ import { spawnSync, execSync } from 'node:child_process';
 import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import fs from 'node:fs';
 import os from 'node:os';
 
@@ -13,11 +12,10 @@ type CommitMessage = {
   body: string;
 };
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const root = import.meta.dirname;
 
 dotenv.config({
-  path: path.resolve(__dirname, '../../.env'),
+  path: path.resolve(root, '../../.env'),
   override: true,
 });
 
