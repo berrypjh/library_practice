@@ -122,18 +122,5 @@
     "react-native": "~0.79.3",
     "react-native-web": "~0.20.0",
     "react-router-dom": "6.29.0"
-  },
-  "nx": {
-    "includedScripts": [],
-    "targets": {
-      "local-registry": {
-        "executor": "@nx/js:verdaccio",
-        "options": {
-          "port": 4873,
-          "config": ".verdaccio/config.yml",
-          "storage": "tmp/local-registry/storage"
-        }
-      }
-    }
   }
 }

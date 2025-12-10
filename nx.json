@@ -112,7 +112,8 @@
     "projects": ["libs/*"],
     "version": {
       "preVersionCommand": "pnpm dlx nx run-many -t build --projects libs/*"
-    }
+    },
+    "projectsRelationship": "independent"
   },
   "targetDefaults": {
     "build": {
