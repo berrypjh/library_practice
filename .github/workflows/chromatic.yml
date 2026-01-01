@@ -24,6 +24,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build Storybook
         run: pnpm run build-storybook
+        env:
+          NX_SKIP_CLOUD: true
       - name: Run Chromatic
         uses: chromaui/action@latest
         with:
