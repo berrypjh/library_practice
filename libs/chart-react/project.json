@@ -30,6 +30,14 @@
         "port": 4400,
         "configDir": "libs/chart-react/.storybook"
       }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/chart-react",
+        "configDir": "libs/chart-react/.storybook"
+      }
     }
   }
 }
