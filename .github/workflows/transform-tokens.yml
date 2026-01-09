@@ -32,11 +32,11 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        working-directory: shared/design-tokens
+        working-directory: ./shared/design-tokens
         run: pnpm install --frozen-lockfile
 
       - name: Transform & Build Tokens
-        working-directory: shared/design-tokens
+        working-directory: ./shared/design-tokens
         run: pnpm run build:tokens
 
       - name: Create Pull Request
