@@ -20,24 +20,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9.8.0
-          run_install: false
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22.20.0
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
         working-directory: ./shared/design-tokens
-        run: pnpm install --frozen-lockfile --config.recursive-install=false
+        run: npm i
 
       - name: Transform & Build Tokens
         working-directory: ./shared/design-tokens
-        run: pnpm run build:tokens
+        run: npm run build:tokens
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
