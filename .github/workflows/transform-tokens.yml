@@ -33,7 +33,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./shared/design-tokens
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --recursive-install=false
 
       - name: Transform & Build Tokens
         working-directory: ./shared/design-tokens

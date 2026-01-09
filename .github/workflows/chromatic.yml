@@ -1,6 +1,10 @@
 name: 'Chromatic'
 
-on: push
+on:
+  push:
+    paths:
+      - 'libs/chart-react/**'
+      - 'libs/chart-core/**'
 
 jobs:
   chromatic:
