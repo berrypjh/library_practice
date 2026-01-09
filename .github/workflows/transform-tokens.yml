@@ -1,0 +1,48 @@
+name: Transform Tokens
+
+on:
+  push:
+    paths:
+      - 'shared/design-tokens/src/data.json'
+    branches:
+      - design-tokens
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9.8.0
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.20.0
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        working-directory: shared/design-tokens
+        run: pnpm install --frozen-lockfile
+
+      - name: Transform & Build Tokens
+        working-directory: shared/design-tokens
+        run: pnpm run build:tokens
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PULL_REQUEST_TOKEN }}
+          commit-message: 'design(root): update design tokens from figma'
+          title: '🤖 Design Tokens Update'
+          body: |
+            Figma Tokens Studio에서 새로운 디자인 토큰이 업데이트되었습니다.
+            자동 변환된 스타일 파일을 확인해주세요.
+          branch: 'design-tokens-update'
+          delete-branch: true
+          base: design-tokens

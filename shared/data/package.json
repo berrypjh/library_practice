@@ -4,7 +4,7 @@
   "types": "./src/index.ts",
   "main": "./src/index.ts",
   "nx": {
-    "sourceRoot": "shared/src",
+    "sourceRoot": "shared/data/src",
     "projectType": "library",
     "tags": []
   }
