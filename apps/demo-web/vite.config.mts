@@ -21,7 +21,7 @@ export default defineConfig(() => ({
     alias: {
       '@berrypjh/core': path.resolve(root, '../../libs/chart-core/src/index.ts'),
       '@berrypjh/react': path.resolve(root, '../../libs/chart-react/src/index.ts'),
-      '@berrypjh/shared-data': path.resolve(root, '../../shared/src/index.ts'),
+      '@berrypjh/shared-data': path.resolve(root, '../../shared/data/src/index.ts'),
     },
   },
   build: {
