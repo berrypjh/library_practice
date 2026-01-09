@@ -15,24 +15,22 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          version: 9.8.0
-          run_install: false
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22.20.0
-          cache: 'pnpm'
 
       - name: Install dependencies
-        working-directory: shared/design-tokens
-        run: pnpm install --frozen-lockfile
+        working-directory: ./shared/design-tokens
+        run: npm install --workspaces=false --no-package-lock
 
       - name: Transform & Build Tokens
-        working-directory: shared/design-tokens
-        run: pnpm run build:tokens
+        working-directory: ./shared/design-tokens
+        run: npm run build:tokens
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
@@ -43,6 +41,6 @@ jobs:
           body: |
             Figma Tokens Studio에서 새로운 디자인 토큰이 업데이트되었습니다.
             자동 변환된 스타일 파일을 확인해주세요.
-          branch: 'design-tokens-update'
+          branch: 'design-tokens-build'
           delete-branch: true
           base: design-tokens
