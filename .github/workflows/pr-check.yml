@@ -1,0 +1,65 @@
+name: PR Quality Check
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+# 동일한 PR에 새로운 커밋이 푸시되면 진행 중이던 이전 워크플로우를 취소하여 리소스를 절약
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.20.0
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Nx Set SHAs
+        uses: nrwl/nx-set-shas@v4
+        # base(main)와 head(PR) 커밋을 비교하여 변경된 프로젝트 범위를 계산
+
+      - name: Lint & Typecheck
+        run: pnpm nx affected -t lint typecheck --parallel=3
+
+      - name: Run Unit Tests
+        run: pnpm nx affected -t test --configuration=ci
+
+      - name: Audit Dependencies
+        run: pnpm audit --prod --audit-level=high
+
+      - name: Build Affected Projects
+        run: pnpm nx affected -t build
+
+      - name: Build Storybook
+        run: pnpm run build-storybook
+
+      - name: Publish to Chromatic
+        # Dependabot 등 외부 봇이 아닐 때만 실행
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          storybookBuildDir: dist/storybook/chart-react
+          onlyChanged: true # 변경된 컴포넌트만 스냅샷 촬영
+          exitZeroOnChanges: true # UI 변경이 있어도 CI를 실패시키지 않고 리뷰어 확인용으로 남김

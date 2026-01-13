@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  react-server-dom-webpack: '>=19.0.2'
+  '@remix-run/router': '>=1.23.2'
+  qs: '>=6.14.1'
+
 importers:
 
   .:
@@ -2416,8 +2421,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@remix-run/router@1.22.0':
-    resolution: {integrity: sha512-MBOl8MeOzpK0HQQQshKB7pABXbmyHizdTpqnrIseTbsv0nAepwC2ENZa1aaBExNQcpLoXmWthhak8SABLzvGPw==}
+  '@remix-run/router@1.23.2':
+    resolution: {integrity: sha512-Ic6m2U/rMjTkhERIa/0ZtXJP17QUi2CbWE7cqx4J58M8aA3QTfW+2UlQ4psvTX9IO1RfNVhK3pcpdjej7L+t2w==}
     engines: {node: '>=14.0.0'}
 
   '@rolldown/pluginutils@1.0.0-beta.27':
@@ -8319,12 +8324,8 @@ packages:
     resolution: {integrity: sha512-Uu7ii+FQy4Qf82G4xu7ShHhjhGahEpCWc3x8UavY3CTcWV+ufmmCtwkr7ZKsX42jdL0kr1B5FKUeqJvAn51jzQ==}
     hasBin: true
 
-  qs@6.13.0:
-    resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
-    engines: {node: '>=0.6'}
-
-  qs@6.14.0:
-    resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
+  qs@6.14.1:
+    resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
     engines: {node: '>=0.6'}
 
   quansync@0.2.11:
@@ -8455,12 +8456,12 @@ packages:
     peerDependencies:
       react: '>=16.8'
 
-  react-server-dom-webpack@19.0.0:
-    resolution: {integrity: sha512-hLug9KEXLc8vnU9lDNe2b2rKKDaqrp5gNiES4uyu2Up3FZfZJZmdwLFXlWzdA9gTB/6/cWduSB2K1Lfag2pSvw==}
+  react-server-dom-webpack@19.2.3:
+    resolution: {integrity: sha512-ifo7aqqdNJyV6U2zuvvWX4rRQ51pbleuUFNG7ZYhIuSuWZzQPbfmYv11GNsyJm/3uGNbt8buJ9wmoISn/uOAfw==}
     engines: {node: '>=0.10.0'}
     peerDependencies:
-      react: ^19.0.0
-      react-dom: ^19.0.0
+      react: ^19.2.3
+      react-dom: ^19.2.3
       webpack: ^5.59.0
 
   react-test-renderer@19.1.0:
@@ -11056,7 +11057,7 @@ snapshots:
       json-stringify-safe: 5.0.1
       mime-types: 2.1.35
       performance-now: 2.1.0
-      qs: 6.14.0
+      qs: 6.14.1
       safe-buffer: 5.2.1
       tough-cookie: 5.1.2
       tunnel-agent: 0.6.0
@@ -11585,9 +11586,9 @@ snapshots:
 
   '@expo/sudo-prompt@9.3.2': {}
 
-  '@expo/vector-icons@14.1.0(expo-font@13.3.2(expo@53.0.24(@babel/core@7.28.5)(@expo/metro-runtime@5.0.5(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.1)))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.1))(react@19.2.1))(react@19.2.1))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)':
+  '@expo/vector-icons@14.1.0(expo-font@13.3.2(expo@53.0.24(@babel/core@7.28.5)(@expo/metro-runtime@5.0.5(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0)))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0))(react@19.2.0))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)':
     dependencies:
-      expo-font: 13.3.2(expo@53.0.24(@babel/core@7.28.5)(@expo/metro-runtime@5.0.5(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.1)))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.1))(react@19.2.1))(react@19.2.1)
+      expo-font: 13.3.2(expo@53.0.24(@babel/core@7.28.5)(@expo/metro-runtime@5.0.5(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0)))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0))(react@19.2.0)
       react: 19.2.0
       react-native: 0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0)
 
@@ -13309,7 +13310,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.7
 
-  '@remix-run/router@1.22.0': {}
+  '@remix-run/router@1.23.2': {}
 
   '@rolldown/pluginutils@1.0.0-beta.27': {}
 
@@ -15419,7 +15420,7 @@ snapshots:
       http-errors: 2.0.0
       iconv-lite: 0.4.24
       on-finished: 2.4.1
-      qs: 6.13.0
+      qs: 6.14.1
       raw-body: 2.5.2
       type-is: 1.6.18
       unpipe: 1.0.0
@@ -17114,7 +17115,7 @@ snapshots:
       '@expo/config-plugins': 10.1.2
       '@expo/fingerprint': 0.13.4
       '@expo/metro-config': 0.20.17
-      '@expo/vector-icons': 14.1.0(expo-font@13.3.2(expo@53.0.24(@babel/core@7.28.5)(@expo/metro-runtime@5.0.5(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.1)))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.1))(react@19.2.1))(react@19.2.1))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)
+      '@expo/vector-icons': 14.1.0(expo-font@13.3.2(expo@53.0.24(@babel/core@7.28.5)(@expo/metro-runtime@5.0.5(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0)))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0))(react@19.2.0))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)
       babel-preset-expo: 13.2.4(@babel/core@7.28.5)
       expo-asset: 11.1.7(expo@53.0.24(@babel/core@7.28.5)(@expo/metro-runtime@5.0.5(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0)))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)
       expo-constants: 17.1.7(expo@53.0.24(@babel/core@7.28.5)(@expo/metro-runtime@5.0.5(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0)))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))(react@19.2.0))(react-native@0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0))
@@ -17195,7 +17196,7 @@ snapshots:
       parseurl: 1.3.3
       path-to-regexp: 0.1.12
       proxy-addr: 2.0.7
-      qs: 6.13.0
+      qs: 6.14.1
       range-parser: 1.2.1
       safe-buffer: 5.2.1
       send: 0.19.0
@@ -18450,7 +18451,7 @@ snapshots:
       json5: 2.2.3
       lodash: 4.17.21
       react-native: 0.79.7(@babel/core@7.28.5)(@react-native-community/cli@18.0.1(typescript@5.9.3))(@types/react@19.2.7)(react@19.2.0)
-      react-server-dom-webpack: 19.0.0(react-dom@19.2.1(react@19.2.0))(react@19.2.0)(webpack@5.103.0(@swc/core@1.5.29(@swc/helpers@0.5.17))(esbuild@0.27.0))
+      react-server-dom-webpack: 19.2.3(react-dom@19.2.1(react@19.2.0))(react@19.2.0)(webpack@5.103.0(@swc/core@1.5.29(@swc/helpers@0.5.17))(esbuild@0.27.0))
       react-test-renderer: 19.1.0(react@19.2.0)
       server-only: 0.0.1
       stacktrace-js: 2.0.2
@@ -20561,11 +20562,7 @@ snapshots:
 
   qrcode-terminal@0.11.0: {}
 
-  qs@6.13.0:
-    dependencies:
-      side-channel: 1.1.0
-
-  qs@6.14.0:
+  qs@6.14.1:
     dependencies:
       side-channel: 1.1.0
 
@@ -20842,17 +20839,17 @@ snapshots:
 
   react-router-dom@6.29.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
-      '@remix-run/router': 1.22.0
+      '@remix-run/router': 1.23.2
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
       react-router: 6.29.0(react@19.2.1)
 
   react-router@6.29.0(react@19.2.1):
     dependencies:
-      '@remix-run/router': 1.22.0
+      '@remix-run/router': 1.23.2
       react: 19.2.1
 
-  react-server-dom-webpack@19.0.0(react-dom@19.2.1(react@19.2.0))(react@19.2.0)(webpack@5.103.0(@swc/core@1.5.29(@swc/helpers@0.5.17))(esbuild@0.27.0)):
+  react-server-dom-webpack@19.2.3(react-dom@19.2.1(react@19.2.0))(react@19.2.0)(webpack@5.103.0(@swc/core@1.5.29(@swc/helpers@0.5.17))(esbuild@0.27.0)):
     dependencies:
       acorn-loose: 8.5.2
       neo-async: 2.6.2
@@ -22133,7 +22130,7 @@ snapshots:
 
   union@0.5.0:
     dependencies:
-      qs: 6.14.0
+      qs: 6.14.1
 
   unique-string@2.0.0:
     dependencies:
