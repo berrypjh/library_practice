@@ -4,16 +4,18 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve demo-web",
-    "start:mobile:expo": "cd apps/demo-mobile && expo start",
-    "test": "nx run-many -t test",
-    "test:watch": "nx run-many -t test --watch",
     "e2e:web": "nx e2e demo-web-e2e",
-    "build": "nx run-many -t build",
-    "lint": "nx run-many -t lint",
-    "lint:fix": "nx run-many -t lint --fix",
-    "affected": "nx affected -t lint,test,build",
+    "start:mobile:expo": "cd apps/demo-mobile && expo start",
+    "test": "nx run-many -t test --all",
+    "test:watch": "nx run-many -t test --all --watch",
+    "build": "nx run-many -t build --all",
+    "lint": "nx run-many -t lint --all",
+    "lint:fix": "nx run-many -t lint --all --fix",
+    "check": "nx run-many -t lint,test,build,typecheck --all",
+    "affected": "nx affected -t lint,test,build,typecheck",
     "affected:build": "nx affected -t build",
     "affected:test": "nx affected -t test",
+    "affected:typecheck": "nx affected -t typecheck",
     "affected:lint": "nx affected -t lint",
     "reset": "nx reset",
     "storybook": "nx storybook @berrypjh/react",
@@ -24,7 +26,6 @@
     "release:dry-run": "nx release --dry-run",
     "format": "nx format:write",
     "format:check": "nx format:check",
-    "check": "nx run-many -t lint,test,build",
     "build:libs:chart-core": "nx build @berrypjh/core",
     "build:libs:chart-react": "nx build @berrypjh/react",
     "build:libs:chart-react-native": "nx build @berrypjh/react-native",
@@ -35,13 +36,16 @@
     "release:local": "tsx tools/scripts/release/release-local.ts",
     "local-registry": "nx local-registry",
     "ai:commit": "tsx tools/scripts/ai/ai-commit-msg.mts",
-    "ai:ui": "tsx tools/scripts/ai/ai-ui-scaffold.mts"
+    "ai:ui": "tsx tools/scripts/ai/ai-ui-scaffold.mts",
+    "prepare": "husky"
   },
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.14.5",
     "@babel/preset-react": "^7.14.5",
     "@babel/runtime": "~7.27.6",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
     "@eslint/js": "^9.8.0",
     "@expo/cli": "~0.24.14",
     "@nx/cypress": "^22.1.3",
@@ -96,9 +100,11 @@
     "eslint-plugin-react": "7.35.0",
     "eslint-plugin-react-hooks": "5.0.0",
     "eslint-plugin-unused-imports": "^4.3.0",
+    "husky": "^9.1.7",
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
+    "lint-staged": "^16.2.7",
     "metro-config": "~0.82.4",
     "metro-resolver": "~0.82.4",
     "nx": "22.1.3",
@@ -132,6 +138,15 @@
     "react-native-web": "~0.20.0",
     "react-router-dom": "6.29.0"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,jsonc,css,scss,md,mdx,yaml,yml}": [
+      "prettier --write"
+    ]
+  },
   "nx": {
     "includedScripts": [],
     "targets": {
@@ -143,6 +158,13 @@
           "storage": "tmp/local-registry/storage"
         }
       }
+    }
+  },
+  "pnpm": {
+    "overrides": {
+      "react-server-dom-webpack": ">=19.0.2",
+      "@remix-run/router": ">=1.23.2",
+      "qs": ">=6.14.1"
     }
   }
 }

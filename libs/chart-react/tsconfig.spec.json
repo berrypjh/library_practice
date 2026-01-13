@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "./out-tsc/vitest",
     "composite": false,
+    "declaration": true,
     "declarationMap": false,
     "emitDeclarationOnly": false,
     "lib": ["es2022", "dom"],
