@@ -50,16 +50,3 @@ jobs:
 
       - name: Build Affected Projects
         run: pnpm nx affected -t build
-
-      - name: Build Storybook
-        run: pnpm run build-storybook
-
-      - name: Publish to Chromatic
-        # Dependabot 등 외부 봇이 아닐 때만 실행
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: chromaui/action@latest
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          storybookBuildDir: dist/storybook/chart-react
-          onlyChanged: true # 변경된 컴포넌트만 스냅샷 촬영
-          exitZeroOnChanges: true # UI 변경이 있어도 CI를 실패시키지 않고 리뷰어 확인용으로 남김
