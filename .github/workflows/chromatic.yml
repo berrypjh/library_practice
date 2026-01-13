@@ -50,4 +50,3 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           storybookBuildDir: dist/storybook/chart-react
-          onlyChanged: true # 변경된 컴포넌트만 스냅샷 촬영
