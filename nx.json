@@ -113,10 +113,14 @@
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github",
-        "renderer": "tools/scripts/release/changelog-renderer.ts"
+        "renderOptions": {
+          "authors": false
+        }
       },
       "projectChangelogs": {
-        "renderer": "tools/scripts/release/changelog-renderer.ts"
+        "renderOptions": {
+          "authors": false
+        }
       }
     }
   },
