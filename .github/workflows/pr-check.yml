@@ -39,6 +39,9 @@ jobs:
         uses: nrwl/nx-set-shas@v4
         # base(main)와 head(PR) 커밋을 비교하여 변경된 프로젝트 범위를 계산
 
+      - name: Format Check (Prettier)
+        run: pnpm nx format:check --base=$NX_BASE --head=$NX_HEAD
+
       - name: Lint & Typecheck
         run: pnpm nx affected -t lint typecheck --parallel=3
 

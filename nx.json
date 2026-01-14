@@ -112,12 +112,12 @@
     "projectsRelationship": "independent",
     "changelog": {
       "workspaceChangelog": {
-        "renderOptions": {
-          "template": "tools/template/changelog-template.hbs"
-        },
-        "createRelease": "github"
+        "createRelease": "github",
+        "renderer": "tools/scripts/release/changelog-renderer.ts"
       },
-      "projectChangelogs": true
+      "projectChangelogs": {
+        "renderer": "tools/scripts/release/changelog-renderer.ts"
+      }
     }
   },
   "targetDefaults": {

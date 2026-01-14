@@ -1,0 +1,42 @@
+name: Release Libraries
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    name: Release Libraries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: '[https://registry.npmjs.org/](https://registry.npmjs.org/)'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Git Configuration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: NX Release (Version & Changelog & Publish)
+        run: npx nx release --skip-publish=false
+        env:
+          # npm/yarn 배포를 위한 토큰
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # GitHub Release 생성을 위한 토큰
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
