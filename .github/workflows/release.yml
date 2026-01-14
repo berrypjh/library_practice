@@ -5,38 +5,48 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  packages: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   release:
     name: Release Libraries
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.8.0
+
+      - name: Setup Node.js (pnpm cache)
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: '[https://registry.npmjs.org/](https://registry.npmjs.org/)'
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+          scope: '@${{ github.repository_owner }}'
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Git Configuration
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "${{ vars.RELEASE_GIT_NAME }}"
+          git config user.email "${{ vars.RELEASE_GIT_EMAIL }}"
 
       - name: NX Release (Version & Changelog & Publish)
-        run: npx nx release --skip-publish=false
+        run: pnpm nx release --skip-publish=false
         env:
-          # npm/yarn 배포를 위한 토큰
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          # GitHub Release 생성을 위한 토큰
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
