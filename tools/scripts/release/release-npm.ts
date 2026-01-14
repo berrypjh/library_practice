@@ -2,9 +2,12 @@ import { releaseVersion, releaseChangelog, releasePublish } from 'nx/release';
 
 const main = async () => {
   const isFirstRelease = process.argv.includes('--first-release');
+  const isBeta = process.argv.includes('--beta') || process.argv.includes('--preid=beta');
 
   const { workspaceVersion, projectsVersionData, releaseGraph } = await releaseVersion({
     firstRelease: isFirstRelease,
+    specifier: isBeta ? 'prerelease' : undefined,
+    preid: isBeta ? 'beta' : undefined,
   });
 
   await releaseChangelog({
@@ -19,6 +22,7 @@ const main = async () => {
     registry: 'https://npm.pkg.github.com',
     access: 'public',
     firstRelease: isFirstRelease,
+    tag: isBeta ? 'beta' : undefined,
   });
 
   const allOk = Object.values(publishResult).every((result) => result.code === 0);
