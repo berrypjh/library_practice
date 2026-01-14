@@ -110,13 +110,22 @@
   "release": {
     "projects": ["@berrypjh/react", "@berrypjh/react-native", "@berrypjh/core"],
     "projectsRelationship": "independent",
+    "releaseTag": {
+      "pattern": "{projectName}@{version}",
+      "strictPreid": true
+    },
     "changelog": {
+      "automaticFromRef": true,
       "workspaceChangelog": {
         "createRelease": "github",
-        "renderer": "tools/scripts/release/changelog-renderer.ts"
+        "renderOptions": {
+          "authors": false
+        }
       },
       "projectChangelogs": {
-        "renderer": "tools/scripts/release/changelog-renderer.ts"
+        "renderOptions": {
+          "authors": false
+        }
       }
     }
   },
