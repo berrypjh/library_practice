@@ -3,7 +3,8 @@ name: Release Libraries
 on:
   push:
     branches:
-      - main
+      - main # 정식 버전
+      - pre-release # 베타 버전
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -45,8 +46,18 @@ jobs:
           git config user.name "${{ vars.RELEASE_GIT_NAME }}"
           git config user.email "${{ vars.RELEASE_GIT_EMAIL }}"
 
-      - name: NX Release (Version & Changelog & Publish)
-        run: pnpm nx release --skip-publish=false
+      # Beta 배포
+      - name: NX Release (Beta)
+        if: github.ref == 'refs/heads/pre-release'
+        run: pnpm release:npm --beta
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Stable 배포
+      - name: NX Release (Stable)
+        if: github.ref == 'refs/heads/main'
+        run: pnpm release:npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
