@@ -2,6 +2,8 @@
   "name": "@berrypjh-lib/source",
   "version": "0.0.0",
   "license": "MIT",
+  "description": "Practice project for learning Nx and library publishing",
+  "private": true,
   "scripts": {
     "start": "nx serve demo-web",
     "e2e:web": "nx e2e demo-web-e2e",
@@ -39,7 +41,6 @@
     "ai:ui": "tsx tools/scripts/ai/ai-ui-scaffold.mts",
     "prepare": "husky"
   },
-  "private": true,
   "devDependencies": {
     "@babel/core": "^7.14.5",
     "@babel/preset-react": "^7.14.5",
@@ -114,6 +115,7 @@
     "react-native-svg": "~15.11.2",
     "react-native-svg-transformer": "~1.5.1",
     "rollup": "^4.14.0",
+    "rollup-plugin-typescript2": "^0.36.0",
     "storybook": "^10.1.0",
     "tailwindcss": "3.4.3",
     "tslib": "^2.3.0",
