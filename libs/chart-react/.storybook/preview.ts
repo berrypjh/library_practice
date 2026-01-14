@@ -3,8 +3,9 @@ import type { Preview } from '@storybook/react';
 const preview: Preview = {
   parameters: {
     controls: {
+      expanded: true,
       matchers: {
-        color: /(background|color)$/i,
+        color: /(background|color|fill|stroke|shadow)$/i,
         date: /Date$/i,
       },
     },
