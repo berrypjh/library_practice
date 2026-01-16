@@ -11,45 +11,192 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  quality-gate:
-    name: Quality Gate
+  derive-shas:
+    name: Derive NX base/head SHAs
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+    outputs:
+      nx_base: ${{ steps.setshas.outputs.base }}
+      nx_head: ${{ steps.setshas.outputs.head }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Checkout (full history for Nx)
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          filter: tree:0
+
+      - name: Nx Set SHAs
+        id: setshas
+        uses: nrwl/nx-set-shas@v4
+        # base(main)와 head(PR) 커밋을 비교하여 변경된 프로젝트 범위를 계산
+
+      - name: Print derived SHAs
+        run: |
+          echo "NX_BASE=${{ steps.setshas.outputs.base }}"
+          echo "NX_HEAD=${{ steps.setshas.outputs.head }}"
+
+  format:
+    name: Format Check (Prettier)
+    runs-on: ubuntu-latest
+    needs: [derive-shas]
+    permissions:
+      contents: read
+    env:
+      NX_BASE: ${{ needs.derive-shas.outputs.nx_base }}
+      NX_HEAD: ${{ needs.derive-shas.outputs.nx_head }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          filter: tree:0
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.8.0
+          version: ${{ vars.PNPM_VERSION }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js (pnpm cache)
+        uses: actions/setup-node@v6
         with:
-          node-version: 22.20.0
+          node-version: ${{ vars.NODE_VERSION }}
           cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Nx Set SHAs
-        uses: nrwl/nx-set-shas@v4
-        # base(main)와 head(PR) 커밋을 비교하여 변경된 프로젝트 범위를 계산
+        run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Format Check (Prettier)
         run: pnpm nx format:check --base=$NX_BASE --head=$NX_HEAD
 
-      - name: Lint & Typecheck
-        run: pnpm nx affected -t lint typecheck --parallel=3
+  lint-typecheck:
+    name: Lint & Typecheck (affected)
+    runs-on: ubuntu-latest
+    needs: [derive-shas]
+    permissions:
+      contents: read
+    env:
+      NX_BASE: ${{ needs.derive-shas.outputs.nx_base }}
+      NX_HEAD: ${{ needs.derive-shas.outputs.nx_head }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          filter: tree:0
 
-      - name: Run Unit Tests
-        run: pnpm nx affected -t test --configuration=ci
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ vars.PNPM_VERSION }}
+
+      - name: Setup Node.js (pnpm cache)
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Lint & Typecheck
+        run: pnpm nx affected -t lint typecheck --parallel=3 --base=$NX_BASE --head=$NX_HEAD
+
+  audit:
+    name: Audit Dependencies
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ vars.PNPM_VERSION }}
+
+      - name: Setup Node.js (pnpm cache)
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Audit Dependencies
         run: pnpm audit --prod --audit-level=high
 
+  test:
+    name: Unit Tests (affected)
+    runs-on: ubuntu-latest
+    needs: [derive-shas, format, lint-typecheck, audit]
+    permissions:
+      contents: read
+    env:
+      NX_BASE: ${{ needs.derive-shas.outputs.nx_base }}
+      NX_HEAD: ${{ needs.derive-shas.outputs.nx_head }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ vars.PNPM_VERSION }}
+
+      - name: Setup Node.js (pnpm cache)
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Run Unit Tests
+        run: pnpm nx affected -t test --configuration=ci --parallel=3 --base=$NX_BASE --head=$NX_HEAD
+
+  build:
+    name: Build (affected)
+    runs-on: ubuntu-latest
+    needs: [derive-shas, format, lint-typecheck, audit, test]
+    permissions:
+      contents: read
+    env:
+      NX_BASE: ${{ needs.derive-shas.outputs.nx_base }}
+      NX_HEAD: ${{ needs.derive-shas.outputs.nx_head }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ vars.PNPM_VERSION }}
+
+      - name: Setup Node.js (pnpm cache)
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+
       - name: Build Affected Projects
-        run: pnpm nx affected -t build
+        run: pnpm nx affected -t build --parallel=3 --base=$NX_BASE --head=$NX_HEAD
