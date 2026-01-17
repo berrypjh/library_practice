@@ -114,6 +114,9 @@
       "pattern": "{projectName}@{version}",
       "strictPreid": true
     },
+    "version": {
+      "conventionalCommits": true
+    },
     "changelog": {
       "automaticFromRef": true,
       "workspaceChangelog": {
